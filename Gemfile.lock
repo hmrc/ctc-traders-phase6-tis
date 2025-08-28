@@ -1,5 +1,5 @@
 GEM
-  remote: https://artefacts.tax.service.gov.uk/artifactory/api/gems/gems/
+  remote: https://rubygems.org/
   specs:
     activesupport (7.0.8.7)
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -45,12 +45,8 @@ GEM
     execjs (2.10.0)
     fast_blank (1.0.1)
     fastimage (2.4.0)
-    ffi (1.17.2-aarch64-linux-gnu)
-    ffi (1.17.2-x86_64-linux-gnu)
-    google-protobuf (4.31.1-aarch64-linux-gnu)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.31.1-x86_64-linux-gnu)
+    ffi (1.17.2)
+    google-protobuf (4.31.1)
       bigdecimal
       rake (>= 13)
     govuk_tech_docs (5.1.0)
@@ -144,12 +140,12 @@ GEM
     middleman-syntax (3.6.1)
       middleman-core (>= 3.2)
       rouge (~> 3.2)
+    mini_portile2 (2.8.9)
     minitest (5.25.5)
     multi_json (1.17.0)
     mutex_m (0.3.0)
-    nokogiri (1.18.9-aarch64-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-linux-gnu)
+    nokogiri (1.18.9)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     openapi3_parser (0.9.2)
       commonmarker (~> 0.17)
@@ -173,10 +169,9 @@ GEM
     rexml (3.4.1)
     rouge (3.30.0)
     sass (3.4.25)
-    sass-embedded (1.89.2-aarch64-linux-gnu)
+    sass-embedded (1.89.2)
       google-protobuf (~> 4.31)
-    sass-embedded (1.89.2-x86_64-linux-gnu)
-      google-protobuf (~> 4.31)
+      rake (>= 13)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-embedded (1.78.0)
@@ -199,8 +194,11 @@ GEM
       parslet (>= 1.8.0, < 3.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2025.2)
+      tzinfo (>= 1.0.0)
     uglifier (3.2.0)
       execjs (>= 0.3.0, < 3)
+    wdm (0.1.1)
     webrick (1.9.1)
 
 PLATFORMS
