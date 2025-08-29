@@ -1,45 +1,41 @@
-# Service Guides/Roadmaps
-
-## Overview
-
-Service Guides are created using GDS [Tech Docs Templates](https://github.com/alphagov/tech-docs-template).
-The generated HTML files are then served by a simple Scala Play application so that they can be deployed
-as an MDTP microservice.
-
-Examples of Service Guides can be seen in [API Documentation in Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api).
+# CTC Traders - Technical Interface Specification
 
 ## Getting started
 
-Read [Tech Docs Templates][tdt] and [Documentation on using Tech Docs Templates](https://tdt-documentation.london.cloudapps.digital/#technical-documentation-template).
+To preview or build the website, we can either use Batect, or the terminal. See the
+respective sections below for requirements.
 
-### Setup the Scala Application
+## Making changes
 
-The _serviceName_ is generally the same name as the git repository.
+To make changes edit the source files in the `source` folder.
 
-* Edit `./build.sbt` change `val appName = "service-guide-skeleton"` to your _serviceName_.
-* Edit `./conf/application.conf` change `appName=service-guide-skeleton` to your _serviceName_.
-* Edit `./conf/prod.routes` change `/guides/example-service-guide` to the route that will be used to access the service guide.
+### Single page output
 
-### Setup Tech Docs
+Although a single page of HTML is generated the markdown is spread across
+multiple files to make it easier to manage. They can be found in
+`source/documentation`.
 
-* Edit `config/tech-docs.yml`
-  * Change `service_name` to a human-readable name of your service guide
-  * Change `service_link`, to the route that will be used to access the service guide. (same as what was added to `./conf/prod.routes`)
+A new markdown file isn't automatically included in the generated output. If we
+add a new markdown file at the location `source/documentation/agile/scrum.md`,
+the following snippet in `source/index.html.md.erb`, includes it in the
+generated output.
 
-## Editing Service Guide pages
+```
+<%= partial 'documentation/agile/scrum' %>
+```
 
-Template files are located in `./source/documentation`. All pages are written in [Markdown](https://en.wikipedia.org/wiki/Markdown).
+Including files manually like this lets us specify the position they appear in
+the page.
 
-To add new pages simply copy and paste one of the existing pages, it will automatically appear in the menu.
+### Multiple pages
 
-`example-page.html.md.erb` provides examples and best practices styles.
+To add a completely new page, create a file with a `.html.md` extension in the `/source` directory.
+
+For example, `source/about.html.md` will be accessible on <http://localhost:4567/about.html>.
 
 ## Previewing
 
 #### Option 1 - Using Docker (recommended)
-
-Requirements:
-* [Docker](https://www.docker.com/)
 
 To live preview:
 ```
@@ -55,12 +51,6 @@ Subsequent runs will be much quicker.
 Requirements:
 * [Ruby Version Manager][rbenv]
 * [Node Version Manager][nodenv]
-
-After installing ruby, change the gem sources to use HMRC's artefact repository:
-```
-gem sources -r https://rubygems.org/
-gem sources -a https://artefacts.tax.service.gov.uk/artifactory/api/gems/gems/
-````
 
 To live preview:
 ```
@@ -78,6 +68,15 @@ Requirements:
 ```
 ./batect build
 ```
+
+If you don't wish to use batect and have Ruby 3.0.2 installed:
+```
+bundle install
+bundle exec middleman build --build-dir=public/ --clean
+```
+
+`bundle inst`
+
 ### Run the Scala Application
 ```
 sbt run
@@ -85,56 +84,7 @@ sbt run
 
 The local URL and port where the files can be previewed will be output, this is normally http://localhost:9000.
 
-## Building
 
-Create a [build job](https://github.com/hmrc/build-jobs) like:
-```
-new SbtMicroserviceJobBuilder(TEAM, 'service-guide-skeleton')
-        .withTests("test")
-        .withNodeJs(version = '16.11.0')
-        .build(this as DslFactory)
-```
+### License
 
-NB the version of Ruby is automatically picked up from `.ruby-version`. But the Node version isn't! Make sure that the 
-version you specify on the build job is the same as what is in `.node-version`.
-
-## FAQ
-
-### I already have a Service Guide how do I update to this version
-
-The easiest and safest option would be:
-
-1. Clone this git repository into a new directory.
-2. Follow the _Getting started_ section above, copying the settings from your original project.
-3. Copy the `./source` directory from your original project.
-4. Copy all files from the new directory to overwrite your original project. (except the `.git` directory)
-5. Check the build job has the correct Node version specified.
-6. Commit and push changes from your original project.
-
-### How do I update the Ruby Gems
-To update the Ruby Gems to the latest versions, run
-```
-./batect update
-```
-This will update the `Gemfile.lock`
-
-In some cases, the [latest release](https://github.com/alphagov/tech-docs-gem/releases) of the gem might not be fetched.
-If this happens, edit the Gemfile to specify the latest version explicitly, for example
-```
-gem 'govuk_tech_docs', '4.4.0'
-```
-and run the update command again. Once updated, remove the explicit version and run the update once more.
-
-### How do I change the Ruby version
-Edit `.ruby-version` with the required version of Ruby.
-
-
-### How do I change the Node version
-Edit `.node-version` with the required version of Node.
-
-[tdt]: https://github.com/alphagov/tech-docs-template
-[rbenv]: https://github.com/rbenv/rbenv
-[nodenv]: https://github.com/nodenv/nodenv
-
-## License
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
